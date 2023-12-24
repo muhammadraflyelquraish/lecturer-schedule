@@ -14,4 +14,13 @@ class Matkul extends Model
     protected $casts = [
         'semester' => 'integer',
     ];
+    
+    public function schedules(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Matkul::class,
+            'schedule_matkul',
+            'matkul_id',
+            'schedule_id');
+    }
 }
