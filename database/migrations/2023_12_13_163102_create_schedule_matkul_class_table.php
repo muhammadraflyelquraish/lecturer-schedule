@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('schedule_matkul_id');
             $table->unsignedBigInteger('class_id');
             $table->integer('sks');
-            $table->dateTime('tanggal');
+            $table->string('hari');
+            $table->string('jam');
             $table->string('ruangan');
             $table->timestamps();
 

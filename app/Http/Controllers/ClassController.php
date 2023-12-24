@@ -11,7 +11,10 @@ class ClassController extends Controller
     public function index()
     {
         $classes = ClassModel::all();
-        return response()->json(['data' => $classes]);
+        // return response()->json(['data' => $classes]);
+        return view('class.index', [
+            'classes' => $classes
+        ]);
     }
 
     public function show($id)
@@ -27,43 +30,45 @@ class ClassController extends Controller
 
 
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string',
-        'angkatan' => 'required|string',
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string',
+            'angkatan' => 'required|string',
+        ]);
 
-    // Use create method with an associative array of form data
-    $class = ClassModel::create([
-        'name' => $request->input('name'),
-        'angkatan' => $request->input('angkatan'),
-    ]);
+        // Use create method with an associative array of form data
+        $class = ClassModel::create([
+            'name' => $request->input('name'),
+            'angkatan' => $request->input('angkatan'),
+        ]);
 
-    return response()->json(['data' => $class], 201);
-}
+        // return response()->json(['data' => $class], 201);
 
-
-public function update(Request $request, $id)
-{
-    $class = ClassModel::find($id);
-
-    if (!$class) {
-        return response()->json(['message' => 'Class not found'], 404);
+        return redirect(route('classes.index'))->with('success', 'Data Kelas berhasil ditambah!');
     }
 
-    $request->validate([
-        'name' => 'required|string',
-        'angkatan' => 'required|string',
-    ]);
 
-    $class->name = $request->input('name');
-    $class->angkatan = $request->input('angkatan');
-    $class->save();
+    public function update(Request $request, $id)
+    {
+        $class = ClassModel::find($id);
 
-    return response()->json(['data' => $class]);
-}
+        if (!$class) {
+            return response()->json(['message' => 'Class not found'], 404);
+        }
 
+        $request->validate([
+            'name' => 'required|string',
+            'angkatan' => 'required|string',
+        ]);
 
+        $class->name = $request->input('name');
+        $class->angkatan = $request->input('angkatan');
+        $class->save();
+
+        // return response()->json(['data' => $class]);
+
+        return redirect(route('classes.index'))->with('success', 'Data Kelas berhasil diubah!');
+    }
 
     public function destroy($id)
     {
@@ -75,7 +80,9 @@ public function update(Request $request, $id)
 
         $class->delete();
 
-        return response()->json(['message' => 'Class deleted successfully']);
+        // return response()->json(['message' => 'Class deleted successfully']);
+
+        return redirect(route('classes.index'))->with('success', 'Data Kelas berhasil dihapus!');
     }
 }
 

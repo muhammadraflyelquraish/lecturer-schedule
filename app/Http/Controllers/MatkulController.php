@@ -11,7 +11,10 @@ class MatkulController extends Controller
     public function index()
     {
         $matkuls = Matkul::all();
-        return response()->json(['data' => $matkuls]);
+        // return response()->json(['data' => $matkuls]);
+        return view('matkul.index', [
+            'matkuls' => $matkuls
+        ]);
     }
 
     public function show($id)
