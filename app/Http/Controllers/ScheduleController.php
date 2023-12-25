@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Matkul;
 use App\Models\Schedule;
-use App\Models\ScheduleMatkul;
 use Illuminate\Http\Request;
+use App\Models\ScheduleMatkul;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
@@ -14,7 +15,8 @@ class ScheduleController extends Controller
     {
         $schedules = Schedule::all();
         return view('schedule.index', [
-            'schedules' => $schedules
+            'schedules' => $schedules,
+            'users' => User::all(),
         ]);
     }
 
@@ -24,7 +26,8 @@ class ScheduleController extends Controller
             ->with('user', 'matkuls')
             ->first();
 
-        return view('schedule.detail', compact('schedule'));
+        $matkuls = Matkul::get();
+        return view('schedule.detail', compact('schedule', 'matkuls'));
     }
 
     public function store(Request $request)
@@ -36,7 +39,10 @@ class ScheduleController extends Controller
 
         $schedule = Schedule::create($request->all());
 
-        return response()->json(['data' => $schedule], 201);
+        // return response()->json(['data' => $schedule], 201);
+
+        return redirect(route('schedule.index'))->with('success', 'Data Schedule berhasil diubah!');
+
     }
 
     public function update(Request $request, $id)
@@ -52,9 +58,9 @@ class ScheduleController extends Controller
             'tahun_akademik' => 'required|string',
         ]);
 
-        $matkul->update($request->all());
+        $schedule->update($request->all());
 
-        return response()->json(['data' => $matkul]);
+        return response()->json(['data' => $schedule]);
     }
 
     public function destroy($id)
@@ -73,15 +79,12 @@ class ScheduleController extends Controller
     // <-- Schedule Matkul -->
     function createScheduleMatkul(Schedule $schedule, Request $request)
     {
-        /**
-         * validate
-         */
         $request->validate([
             'matkul_ids' => 'required|array|',
         ]);
 
         $scheduleMatkul = DB::transaction(function () use ($schedule, $request) {
-            foreach ($request->matkul_ids as $i => $matkul_id) {
+            foreach ($request->matkul_ids as $matkul_id) {
                 /**
                  * @todo: check is matkul exists
                  */
@@ -112,13 +115,18 @@ class ScheduleController extends Controller
             }
         });
 
-        return response()->json(['message' => 'Matkul successfully added']);
+        return redirect()->back()->with('success', 'Matkul successfully added');
     }
 
     function deleteScheduleMatkul(Schedule $schedule, ScheduleMatkul $scheduleMatkul)
     {
-        dd($schedule, $scheduleMatkul);
-        return response()->json(['message' => 'Schedule Matkul successfully delete']);
+        $scheduleMatkul->delete();
+        return redirect()->back();
     }
 
+    // <-- Schedule Matkul Class -->
+    function createScheduleMatkulClass(Schedule $schedule, ScheduleMatkul $scheduleMatkul)
+    {
+
+    }
 }
