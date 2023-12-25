@@ -39,7 +39,11 @@ Route::middleware('auth')->group(function () {
 
 // <-- Schedule Matkul -->
 Route::post('/schedule/{schedule}/matkul', [ScheduleController::class, 'createScheduleMatkul'])->name('shedule.matkul.store');
-Route::delete('/schedule/{schedule}/matkul/{shceduleMatkul}', [ScheduleController::class, 'deleteScheduleMatkul'])->name('shedule.matkul.destroy');
+Route::delete('/schedule/{schedule}/matkul/{scheduleMatkul}', [ScheduleController::class, 'deleteScheduleMatkul'])->name('shedule.matkul.destroy');
+
+// <-- Schedule Matkul Class -->
+Route::post('/schedule/{schedule}/matkul/{scheduleMatkul}/class', [ScheduleController::class, 'createScheduleMatkulClass'])->name('shedule.matkul.class.store');
+Route::delete('/schedule/{schedule}/matkul/{scheduleMatkul}/class/{scheduleMatkulClass}', [ScheduleController::class, 'deleteScheduleMatkulClass'])->name('shedule.matkul.class.destroy');
 
 // <-- Schedule -->
 Route::resource('schedule', ScheduleController::class);

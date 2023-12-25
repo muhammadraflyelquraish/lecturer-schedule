@@ -34,11 +34,41 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'Antoni',
+            'nip' => '11210910000011',
             'email' => 'antoni@example.com',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'role_id' => 1
         ]);
+
+        \App\Models\User::factory()->create([
+            'name' => 'Pak Imam',
+            'nip' => '11210910000011',
+            'email' => 'antoni2@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'role_id' => 4
+        ]);
+
+
+        \App\Models\User::factory()->create([
+            'name' => 'Bu Fitri',
+            'nip' => '11210910000011',
+            'email' => 'antoni3@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'role_id' => 4
+        ]);
+
+
+        \App\Models\User::factory()->create([
+            'name' => 'Bu Dewi',
+            'email' => 'antoni4@example.com',
+            'email_verified_at' => now(),
+            'password' => Hash::make('password'),
+            'role_id' => 4
+        ]);
+
 
 
         \App\Models\ClassModel::factory()->create([
