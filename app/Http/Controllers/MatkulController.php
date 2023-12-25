@@ -38,7 +38,8 @@ class MatkulController extends Controller
 
         $matkul = Matkul::create($request->all());
 
-        return response()->json(['data' => $matkul], 201);
+        // return response()->json(['data' => $matkul], 201);
+        return redirect(route('matkul.index'))->with('success', 'Data Matkul berhasil ditambah!');
     }
 
     public function update(Request $request, $id)
@@ -57,7 +58,9 @@ class MatkulController extends Controller
 
         $matkul->update($request->all());
 
-        return response()->json(['data' => $matkul]);
+        // return response()->json(['data' => $matkul]);
+
+        return redirect(route('matkul.index'))->with('success', 'Data Kelas berhasil diupdate!');
     }
 
     public function destroy($id)
@@ -70,7 +73,9 @@ class MatkulController extends Controller
 
         $matkul->delete();
 
-        return response()->json(['message' => 'Matkul deleted']);
+        // return response()->json(['message' => 'Matkul deleted']);
+
+        return redirect(route('matkul.index'))->with('success', 'Data Kelas berhasil dihapus!');
     }
 }
 

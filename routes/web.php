@@ -31,19 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/classes', [ClassController::class, 'index'])->name('classes.index');
-    Route::get('/classes/{id}', [ClassController::class, 'show'])->name('classes.show');
-    Route::post('/classes', [ClassController::class, 'store'])->name('classes.store');
-    Route::put('/classes/{id}', [ClassController::class, 'update'])->name('classes.update');
-    Route::delete('/classes/{id}', [ClassController::class, 'destroy'])->name('classes.destroy');
-
-    Route::get('/matkul', [MatkulController::class, 'index'])->name('matkul.index');
-    Route::get('/matkul/{id}', [MatkulController::class, 'show'])->name('matkul.show');
-    Route::post('/matkul', [MatkulController::class, 'store'])->name('matkul.store');
-    Route::post('/matkul/{id}', [MatkulController::class, 'update'])->name('matkul.update');
-    Route::delete('/matkul/{id}', [MatkulController::class, 'destroy'])->name('matkul.destroy');
-
+    Route::resource('classes', ClassController::class);
+    Route::resource('matkul', MatkulController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('users', UserController::class, ['names' => 'users'])->middleware('can:isAdmin');
 });
@@ -54,14 +43,5 @@ Route::delete('/schedule/{schedule}/matkul/{shceduleMatkul}', [ScheduleControlle
 
 // <-- Schedule -->
 Route::resource('schedule', ScheduleController::class);
-
-// Route::get('/schedule', [ScheduleController::class, 'index']);
-// Route::get('/schedule/{id}', [ScheduleController::class, 'show'])->name();
-// Route::post('/schedule', [ScheduleController::class, 'store']);
-// Route::post('/schedule/{id}', [ScheduleController::class, 'update']);
-// Route::delete('/schedule/{id}', [ScheduleController::class, 'destroy']);
-
-
-
 
 require __DIR__ . '/auth.php';
