@@ -9,6 +9,7 @@ class Matkul extends Model
 {
     use HasFactory;
     protected $table = 'matkul';
+    
     protected $fillable = ['code', 'name', 'semester'];
 
     protected $casts = [
