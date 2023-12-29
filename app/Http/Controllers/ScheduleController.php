@@ -41,7 +41,7 @@ class ScheduleController extends Controller
 
         // return response()->json(['data' => $schedule], 201);
 
-        return redirect(route('schedule.index'))->with('success', 'Data Schedule berhasil diubah!');
+        return redirect(route('schedule.index'))->with('success', 'Data Schedule berhasil ditambahkan!');
 
     }
 
@@ -60,7 +60,9 @@ class ScheduleController extends Controller
 
         $schedule->update($request->all());
 
-        return response()->json(['data' => $schedule]);
+        // return response()->json(['data' => $schedule]);
+
+        return redirect(route('schedule.index'))->with('success', 'Data Schedule berhasil diubah!');
     }
 
     public function destroy($id)
@@ -73,7 +75,9 @@ class ScheduleController extends Controller
 
         $schedule->delete();
 
-        return response()->json(['message' => 'Schedule deleted']);
+        // return response()->json(['message' => 'Schedule deleted']);
+
+        return redirect(route('schedule.index'))->with('success', 'Data Schedule berhasil dihapus!');
     }
 
     // <-- Schedule Matkul -->

@@ -16,8 +16,18 @@ class ScheduleMatkul extends Model
         'matkul_id'
     ];
 
-    function matkul(){
+    function matkul()
+    {
         return $this->belongsTo(Matkul::class);
+    }
+
+    public function classes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            ScheduleMatkul::class,
+            'schedule_matkul_class',
+            'schedule_matkul_id',
+            'class_id');
     }
 
 }

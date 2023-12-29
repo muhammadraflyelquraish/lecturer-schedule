@@ -14,7 +14,8 @@ class UserController extends Controller
     public function index()
     {
         return view('user.index', [
-            'users' => User::all()
+            'users' => User::all(),
+            'roles' => Role::all()
         ]);
     }
 
@@ -47,10 +48,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user.edit', [
-            'user' => $user,
-            'roles' => Role::all()
-        ]);
+        //
     }
 
     /**
@@ -64,7 +62,7 @@ class UserController extends Controller
 
         $user->update(['role_id' => $validatedData['role_id']]);
 
-        return redirect('/users')->with('update', 'Data User berhasil diubah!');
+        return redirect('/users')->with('success', 'Data User berhasil diubah!');
 
         // $check = Method::where('method', $request['method'])->first();
 
