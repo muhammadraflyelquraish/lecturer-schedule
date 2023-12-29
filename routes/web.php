@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\ScheduleMatkulClass;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\ClassController;
 use App\Http\Controllers\MatkulController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ScheduleController;
+use App\Http\Controllers\ScheduleMatkulClassController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,5 +49,8 @@ Route::delete('/schedule/{schedule}/matkul/{scheduleMatkul}/class/{scheduleMatku
 
 // <-- Schedule -->
 Route::resource('schedule', ScheduleController::class);
+
+// <-- Schedule -->
+Route::resource('courses', ScheduleMatkulClassController::class);
 
 require __DIR__ . '/auth.php';

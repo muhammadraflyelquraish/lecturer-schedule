@@ -59,7 +59,7 @@
                 <th scope="col">Nama</th>
                 <th scope="col">Kode</th>
                 <th scope="col">Semester</th>
-                <th scope="col">Delete</th>
+                <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
             </tr>
         </thead>
