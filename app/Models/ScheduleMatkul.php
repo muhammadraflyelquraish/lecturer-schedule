@@ -21,13 +21,14 @@ class ScheduleMatkul extends Model
         return $this->belongsTo(Matkul::class);
     }
 
-    public function classes(): BelongsToMany
+    public function schedule()
     {
-        return $this->belongsToMany(
-            ScheduleMatkul::class,
-            'schedule_matkul_class',
-            'schedule_matkul_id',
-            'class_id');
+        return $this->belongsTo(Schedule::class);
+    }
+
+    public function classes()
+    {
+        return $this->hasMany(ScheduleMatkulClass::class, 'schedule_matkul_id', 'id');
     }
 
 }

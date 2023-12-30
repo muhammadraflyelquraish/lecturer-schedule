@@ -9,5 +9,15 @@ class ClassModel extends Model
 {
     use HasFactory;
     protected $table = 'class';
-    protected $fillable = ['name','angkatan'];
+    protected $fillable = ['name', 'angkatan'];
+
+    public function scheduleMatkuls()
+    {
+        return $this->belongsToMany(
+            ScheduleMatkul::class,
+            'schedule_matkul_class',
+            'class_id',
+            'schedule_matkul_id',
+        );
+    }
 }

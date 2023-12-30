@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ScheduleMatkulClass;
+use App\Models\ScheduleMatkul;
 use Illuminate\Http\Request;
 
 class ScheduleMatkulClassController extends Controller
@@ -13,7 +14,7 @@ class ScheduleMatkulClassController extends Controller
     public function index()
     {
         return view('course.index', [
-            'ScheduleMatkulClasses' => ScheduleMatkulClass::all()
+            'scheduleMatkuls' => ScheduleMatkul::all()
         ]);
     }
 

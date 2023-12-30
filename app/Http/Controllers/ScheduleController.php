@@ -7,6 +7,8 @@ use App\Models\Matkul;
 use App\Models\Schedule;
 use Illuminate\Http\Request;
 use App\Models\ScheduleMatkul;
+use App\Models\ClassModel;
+use App\Models\ScheduleMatkulClass;
 use Illuminate\Support\Facades\DB;
 
 class ScheduleController extends Controller
@@ -23,8 +25,8 @@ class ScheduleController extends Controller
     public function show(Schedule $schedule)
     {
         $schedule = $schedule
-            ->with('user', 'matkuls')
-            ->first();
+            ->load('user')
+            ->load('matkuls');
 
         $matkuls = Matkul::get();
         return view('schedule.detail', compact('schedule', 'matkuls'));
@@ -38,8 +40,6 @@ class ScheduleController extends Controller
         ]);
 
         $schedule = Schedule::create($request->all());
-
-        // return response()->json(['data' => $schedule], 201);
 
         return redirect(route('schedule.index'))->with('success', 'Data Schedule berhasil ditambahkan!');
 
@@ -81,13 +81,22 @@ class ScheduleController extends Controller
     }
 
     // <-- Schedule Matkul -->
+
+    function showScheduleMatkul(Schedule $schedule, ScheduleMatkul $scheduleMatkul)
+    {
+        $scheduleMatkul = $scheduleMatkul->load('classes');
+        $class = ClassModel::all();
+
+        return view('schedule.detail-class', compact('schedule', 'scheduleMatkul', 'class'));
+    }
+
     function createScheduleMatkul(Schedule $schedule, Request $request)
     {
         $request->validate([
             'matkul_ids' => 'required|array|',
         ]);
 
-        $scheduleMatkul = DB::transaction(function () use ($schedule, $request) {
+        DB::transaction(function () use ($schedule, $request) {
             foreach ($request->matkul_ids as $matkul_id) {
                 /**
                  * @todo: check is matkul exists
@@ -96,6 +105,7 @@ class ScheduleController extends Controller
                 if (!$matkul) {
                     return response()->json(['message' => 'Matkul with id ' . $matkul_id . ' not found'], 404);
                 }
+                // dd($request->matkul_ids);
 
                 /**
                  * @todo: check is matkul already added on schedule
@@ -103,7 +113,8 @@ class ScheduleController extends Controller
                 $scheduleMatkul = ScheduleMatkul::query()
                     ->where('schedule_id', $schedule->id)
                     ->where('matkul_id', $matkul_id)
-                    ->exists();
+                    ->first();
+                // dd($scheduleMatkul, $schedule->id, $matkul_id);
                 if ($scheduleMatkul) {
                     continue;
                 }
@@ -111,11 +122,10 @@ class ScheduleController extends Controller
                 /**
                  * @todo: create schedule matkul
                  */
-                $scheduleMatkul = ScheduleMatkul::create([
+                ScheduleMatkul::create([
                     'schedule_id' => $schedule->id,
                     'matkul_id' => $matkul_id
                 ]);
-                return $scheduleMatkul;
             }
         });
 
@@ -129,8 +139,46 @@ class ScheduleController extends Controller
     }
 
     // <-- Schedule Matkul Class -->
-    function createScheduleMatkulClass(Schedule $schedule, ScheduleMatkul $scheduleMatkul)
+    function createScheduleMatkulClass(Schedule $schedule, ScheduleMatkul $scheduleMatkul, Request $request)
     {
+        $request->validate([
+            'class_id' => 'required|string|',
+            'sks' => 'required|integer|',
+            'hari' => 'required|string|',
+            'start_time' => 'required|string|',
+            'end_time' => 'required|string|',
+            'ruangan' => 'required|string|',
+        ]);
 
+        // dd($request->all());
+
+        /**
+         * @todo: check is class exists
+         */
+        $class = ClassModel::find($request->class_id);
+        if (!$class) {
+            return response()->json(['message' => 'Class with id ' . $request->class_id . ' not found'], 404);
+        }
+
+        /**
+         * @todo: check is matkul already added on schedule
+         */
+        $scheduleMatkulClass = ScheduleMatkulClass::query()
+            ->where('schedule_matkul_id', $scheduleMatkul->id)
+            ->where('class_id', $class->id)
+            ->first();
+
+        if (!$scheduleMatkulClass) {
+            ScheduleMatkulClass::create([
+                'schedule_matkul_id' => $scheduleMatkul->id,
+                'class_id' => $request->class_id,
+                'sks' => $request->sks,
+                'hari' => $request->hari,
+                'jam' => $request->start_time . ' s.d ' . $request->end_time,
+                'ruangan' => $request->ruangan
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Matkul successfully added');
     }
 }

@@ -24,13 +24,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($ScheduleMatkulClasses as $ScheduleMatkulClass)
+            {{-- {{ dd($scheduleMatkuls) }}
+            @foreach ($scheduleMatkuls as $scheduleMatkul)
                 <tr>
                     <td>
-                        {{ $ScheduleMatkulClass-> }}
+                        {{ $loop->iteration }}
+                    </td>
+                    <td>
+                        {{ $scheduleMatkul->schedule->user->name }}
                     </td>
                 </tr>
-            @endforeach
+            @endforeach --}}
         </tbody>
     </table>
 
