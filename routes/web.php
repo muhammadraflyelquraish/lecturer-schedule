@@ -41,6 +41,7 @@ Route::middleware('auth')->group(function () {
 
 // <-- Schedule Matkul -->
 Route::post('/schedule/{schedule}/matkul', [ScheduleController::class, 'createScheduleMatkul'])->name('shedule.matkul.store');
+Route::get('/schedule/{schedule}/matkul/{scheduleMatkul}', [ScheduleController::class, 'showScheduleMatkul'])->name('schedule.matkul.show');
 Route::delete('/schedule/{schedule}/matkul/{scheduleMatkul}', [ScheduleController::class, 'deleteScheduleMatkul'])->name('shedule.matkul.destroy');
 
 // <-- Schedule Matkul Class -->

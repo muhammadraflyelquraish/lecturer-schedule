@@ -50,8 +50,7 @@
                                         @endforeach
 
                                         @if ($isExist)
-                                            <td><input type="checkbox" name="matkul_ids[]" value="{{ $matkul->id }}"
-                                                    checked="" disabled>
+                                            <td><input type="checkbox" value="{{ $matkul->id }}" checked="" disabled>
                                             @else
                                             <td><input type="checkbox" name="matkul_ids[]" value="{{ $matkul->id }}">
                                         @endif
@@ -103,7 +102,9 @@
                     <td>{{ $matkul->matkul->code }}</td>
                     <td>{{ $matkul->matkul->name }}</td>
                     <td>{{ $matkul->matkul->semester }}</td>
-                    <td>
+                    <td class="d-flex gap-2">
+                        <a class="btn btn-primary"
+                            href="{{ Route('schedule.matkul.show', [$schedule->id, $matkul->id]) }}">Detail</a>
                         <form action="{{ Route('shedule.matkul.destroy', [$schedule->id, $matkul->id]) }}" method="POST"
                             onsubmit="return confirm('Yakin ingin menghapus?');">
                             @csrf
